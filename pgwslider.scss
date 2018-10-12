@@ -1,0 +1,171 @@
+@charset "UTF-8";
+
+/**
+ * PgwSlider - Version 2.3
+ *
+ * Copyright 2014, Jonathan M. Piat
+ * http://pgwjs.com - http://pagawa.com
+ *
+ * Released under the GNU GPLv3 license - http://opensource.org/licenses/gpl-3.0
+ */
+
+.pgwSlider {
+    width: 100%;
+    
+    a{
+        text-decoration: none;
+    }
+    
+    .ps-current {
+        float: left;
+        width: 74%;
+        overflow: hidden;
+        height: inherit;
+        position: relative;
+        font-size: 1rem;
+        
+        ul {
+            width: 100%;
+        }
+        
+        li {
+            width: 100%;
+            z-index: 1;
+            opacity: 0;
+            /*display: none;*/
+        }
+        
+        img {
+            max-width: 100%;
+            min-width: 100%;
+            height: auto;
+            display: block;
+            transition: margin-top 250ms linear;
+        }
+    }
+    
+    figure {
+        margin-bottom: 0;
+    }
+}
+
+
+
+
+
+ul.pgwSlider, .pgwSlider  ul {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
+
+
+
+ul.pgwSlider > li,
+.pgwSlider > .ps-list > li {
+    
+    display: inline-block;
+    min-height: 50px;
+    max-height: 70px;
+    min-width: 15%;
+    font-size: 0.7rem;
+    margin-bottom: 0;
+    overflow: hidden;
+    position: relative;
+    transition: opacity 200ms linear;
+    opacity: 0.6;
+}
+
+
+.ps-current li[class^="elt_"] {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s,opacity .5s linear;
+    position: absolute;
+}
+
+.ps-current li[class^="elt_"].active {
+    visibility: visible;
+    opacity: 1;
+    position: static;
+}
+
+
+ul.pgwSlider > li,
+.pgwSlider > .ps-list > li.active{
+    opacity: 1;
+}
+
+ul.pgwSlider > li:last-child,
+.pgwSlider > ul > li:last-child {
+    margin-bottom: 0;
+}
+
+ul.pgwSlider > li span,
+.pgwSlider > .ps-list > li span {
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+ul.pgwSlider > li:hover,
+.pgwSlider > ul > li:hover {
+    opacity: 1 !important;
+}
+
+ul.pgwSlider > li img,
+.pgwSlider > ul > li img {
+    width: 100%;
+    min-height: 100%;
+    display: block;
+    transition: margin-top 250ms linear;
+}
+
+.pgwSlider .ps-prevIcon {
+    border-color:transparent #fff transparent;
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+    display: block;
+}
+
+.pgwSlider .ps-current {
+    width: 100%;
+}
+
+.pgwSlider .ps-nextIcon {
+    border-color:transparent #fff transparent;
+    border-style: solid;
+    border-width: 10px 0 10px 10px;
+    display: block;
+}
+
+.pgwSlider .ps-current .ps-prev {
+    background: rgba(32, 22, 66, 0.5);
+    border: 1px solid #777;
+    border-left: 0;
+    border-radius: 0 4px 4px 0;
+    position: absolute;
+    padding: 20px 20px 20px 17px;
+    left: 0;
+    top: 45%;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.pgwSlider .ps-current .ps-next {
+    background: rgba(32, 22, 66, 0.5);
+    border: 1px solid #777;
+    border-right: 0;
+    border-radius: 4px 0 0 4px;
+    position: absolute;
+    padding: 20px 17px 20px 20px;
+    right: 0;
+    top: 45%;
+    cursor: pointer;
+}
