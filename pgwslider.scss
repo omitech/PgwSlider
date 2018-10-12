@@ -49,6 +49,9 @@
     }
     
     .ps-list {
+        li {
+            cursor: pointer;
+        }
         li.active{
            opacity: 1;
         }
