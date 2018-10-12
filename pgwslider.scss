@@ -47,6 +47,16 @@
     figure {
         margin-bottom: 0;
     }
+    
+    .ps-list {
+        li.active{
+           opacity: 1;
+        }
+     
+        figcaption {
+            display: none;
+        }
+    }
 }
 
 
@@ -65,7 +75,7 @@ ul.pgwSlider > li,
 .pgwSlider > .ps-list > li {
     
     display: inline-block;
-    min-height: 50px;
+    min-height: 25px;
     max-height: 70px;
     min-width: 15%;
     font-size: 0.7rem;
@@ -90,41 +100,14 @@ ul.pgwSlider > li,
     position: static;
 }
 
-
-ul.pgwSlider > li,
-.pgwSlider > .ps-list > li.active{
-    opacity: 1;
-}
-
 ul.pgwSlider > li:last-child,
 .pgwSlider > ul > li:last-child {
     margin-bottom: 0;
 }
 
-ul.pgwSlider > li span,
-.pgwSlider > .ps-list > li span {
-    display: block;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    padding: 5px;
-    background: rgba(0, 0, 0, 0.7);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 ul.pgwSlider > li:hover,
 .pgwSlider > ul > li:hover {
     opacity: 1 !important;
-}
-
-ul.pgwSlider > li img,
-.pgwSlider > ul > li img {
-    width: 100%;
-    min-height: 100%;
-    display: block;
-    transition: margin-top 250ms linear;
 }
 
 .pgwSlider .ps-prevIcon {
