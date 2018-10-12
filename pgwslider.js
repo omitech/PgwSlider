@@ -10,14 +10,9 @@
     $.fn.pgwSlider = function(options) {
 
         var defaults = {
-            mainClassName : 'pgwSlider narrow',
-            selectionMode : 'click',
-            displayList : true,
+            mainClassName : 'pgwSlider',
             displayControls : false,
             touchControls : true,
-            verticalCentering : false,
-            adaptiveHeight : false,
-            maxHeight : null,
             beforeSlide : null,
             afterSlide : null
         };
@@ -101,19 +96,10 @@
         };
 
         // Update the current height
-        var updateHeight = function(height, animate) {
+        var updateHeight = function(element) {
 
-            // Check maxHeight
-            if (pgwSlider.config.maxHeight) {
-                if (pgwSlider.plugin.width() > 480 && height > pgwSlider.config.maxHeight) {
-                    height = pgwSlider.config.maxHeight;
-                } else if (pgwSlider.plugin.width() <= 480) {
-                    if (height + pgwSlider.plugin.find('.ps-list').height() > pgwSlider.config.maxHeight) {
-                        height = pgwSlider.config.maxHeight - pgwSlider.plugin.find('.ps-list').height();
-                    }
-                }
-            }
-
+            var height = element.height();
+            
             // Prevents multiple calculations in a short time
             clearTimeout(pgwSlider.resizeEvent);
             pgwSlider.resizeEvent = setTimeout(function() {
@@ -121,67 +107,17 @@
                 // Adjust right list
                 var elementHeight = ((height - ((pgwSlider.slideCount - 1) * 6)) / pgwSlider.slideCount);
                 var elementWidth = (100 / pgwSlider.slideCount);
+                
+                
                 pgwSlider.plugin.find('.ps-list > li').css({ width: elementWidth + '%' });
 
-                // Adjust main container
-                if (typeof animate != 'undefined' && animate && pgwSlider.config.maxHeight == null) {
-                    pgwSlider.plugin.find('.ps-current').css('height', height);
-                    pgwSlider.plugin.find('.ps-list > li').css('height', elementHeight);                    
-
-                } else {
-                    //pgwSlider.plugin.find('.ps-current').css('height', height);
-                    pgwSlider.plugin.find('.ps-list > li').css('height', elementHeight);
-                    
-                    pgwSlider.plugin.find('.ps-prev').css('top', height*.4);
-                    pgwSlider.plugin.find('.ps-next').css('top', height*.4);
-                    
-                }
                 
+                //pgwSlider.plugin.find('.ps-current').css('height', height);
+                pgwSlider.plugin.find('.ps-list > li').css('height', elementHeight);
                 
-
-                // Vertical alignement
-                if (pgwSlider.config.verticalCentering) {
-
-                    // List elements
-                    pgwSlider.plugin.find('.ps-list > li').each(function(){
-                        if ((elementHeight > 50) && ($(this).find('img').height() > elementHeight)) {
-                            var imageMargin = Math.round(($(this).find('img').height() - elementHeight) / 2);
-                            $(this).find('img').css('margin-top', -imageMargin);
-
-                        } else if ($(this).find('img').height() < elementHeight) {
-                            var imageMargin = Math.round((elementHeight - $(this).find('img').height()) / 2);
-                            $(this).find('img').css('margin-top', imageMargin);
-
-                        } else {
-                            $(this).find('img').css('margin-top', '');
-                        }
-                    });
-
-                    // Current elements
-                    pgwSlider.plugin.find('.ps-current > ul > li').each(function(){
-                        var isVisible = ($(this).css('display') == 'none') ? false : true;
-
-                        if (! isVisible) {
-                            $(this).show();
-                        }
-
-                        if ($(this).show().find('img').height() > height) {
-                            var imageMargin = Math.round(($(this).find('img').height() - height) / 2);
-                            $(this).find('img').css('margin-top', -imageMargin);
-
-                        } else if ($(this).show().find('img').height() < height) {
-                            var imageMargin = Math.round((height - $(this).find('img').height()) / 2);
-                            $(this).find('img').css('margin-top', imageMargin);
-
-                        } else {
-                            $(this).find('img').css('margin-top', '');
-                        }
-
-                        if (! isVisible) {
-                            $(this).hide();
-                        }
-                    });
-                }
+                var imgHeight = element.find('img').height();                
+                pgwSlider.plugin.find('.ps-prev').css('top', imgHeight * 0.4);
+                pgwSlider.plugin.find('.ps-next').css('top', imgHeight * 0.4);
 
             }, 100);
 
@@ -237,12 +173,6 @@
                 });
             }
 
-            // Disable list
-            if (! pgwSlider.config.displayList) {
-                pgwCurrent.css('width', '100%');
-                pgwSlider.plugin.find('.ps-list').hide();
-            }
-
             // Get slider elements
             var elementId = 1;
             pgwList.each(function() {
@@ -252,19 +182,6 @@
 
                 $(this).addClass('elt_' + element.id);
                 
-
-                // Check element title
-                /*
-                if (element.title) {
-                    if ($(this).find('span').length == 1) {
-                        if ($(this).find('span').text() == '') {
-                            $(this).find('span').text(element.title);
-                        }
-                    } else {
-                        $(this).find('img').after('<span>' + element.title + '</span>');
-                    }
-                }
-                */
 
                 // Set element in the current list
                 var currentElement = $('<li class="elt_' + elementId + '"></li>');
@@ -301,15 +218,10 @@
             pgwCurrent.find('ul > li.elt_1 img').on('load', function() {
                 //setSizeClass();
 
-                var maxHeight = pgwSlider.plugin.find('.ps-current > ul > li.elt_1').height();
-                updateHeight(maxHeight);
+                updateHeight(pgwSlider.plugin.find('.ps-current > ul > li.elt_1'));
 
                 pgwSlider.window.resize(function() {
-                    // The new class must be set before the recalculation of the height.
-                    //setSizeClass();
-
-                    var maxHeight = pgwSlider.plugin.find('.ps-current > ul > li.elt_' + pgwSlider.currentSlide + ' img').height();
-                    updateHeight(maxHeight, pgwSlider.config.adaptiveHeight);
+                    updateHeight(pgwSlider.plugin.find('.ps-current > ul > li.elt_' + pgwSlider.currentSlide));
                 });
             });
 
@@ -350,41 +262,6 @@
             return true;
         };
 
-        // Finish element
-        var finishElement = function(element) {
-
-            // Element caption
-            var elementText = '';
-            if (element.title) {
-                elementText += element.title;
-            }
-
-            if (element.description) {
-                if (elementText != '') elementText += '<br>';
-                elementText += element.description;
-            }
-
-            
-            
-            // Slider controls
-            if (pgwSlider.config.displayControls) {
-                pgwSlider.plugin.find('.ps-current > .ps-prev, .ps-current > .ps-next').removeClass('fade');
-            }
-
-            // After slide
-            if (typeof pgwSlider.config.afterSlide == 'function') {
-                pgwSlider.config.afterSlide(element.id);
-            }
-
-            // Set the container height
-            if (pgwSlider.config.adaptiveHeight) {
-                var maxHeight = pgwSlider.plugin.find('.ps-current .elt_' + element.id + ' img').height();
-                updateHeight(maxHeight, true);
-            }
-
-            return true;
-        }
-
         // Fade an element
         var fadeElement = function(element) {
             var elementContainer = pgwSlider.plugin.find('.ps-current > ul');
@@ -404,15 +281,7 @@
             if (pgwSlider.currentSlide > 0) {
                 var currentElement = elementContainer.find('.elt_' + pgwSlider.currentSlide);
 
-                if (typeof currentElement.animate != 'function') {
-                    currentElement.animate = function(css, duration, callback) {
-                        currentElement.css(css);
-                        if (callback) {
-                            callback();
-                        }
-                    };
-                }
-
+                
                 if (typeof currentElement.stop == 'function') {
                     currentElement.stop();
                 }
@@ -427,20 +296,24 @@
             // Next element
             var nextElement = elementContainer.find('.elt_' + element.id);
 
-            if (typeof nextElement.animate != 'function') {
-                nextElement.animate = function(css, duration, callback) {
-                    nextElement.css(css);
-                    if (callback) {
-                        callback();
-                    }
-                };
-            }
-
             if (typeof nextElement.stop == 'function') {
                 nextElement.stop();
             }
-
+            
             nextElement.addClass('active');
+            
+            // positon controls
+            if (pgwSlider.config.displayControls) {
+                var imgHeight = pgwSlider.plugin.find('.ps-current li.active img').height();
+                pgwSlider.plugin.find('.ps-prev').css('top', imgHeight * 0.4);
+                pgwSlider.plugin.find('.ps-next').css('top', imgHeight * 0.4);
+                //pgwSlider.plugin.find('.ps-current > .ps-prev, .ps-current > .ps-next').removeClass('fade');
+            }
+            
+            // After slide
+            if (typeof pgwSlider.config.afterSlide == 'function') {
+                pgwSlider.config.afterSlide(element.id);
+            }  
             
             return true;
         }
@@ -470,7 +343,7 @@
                 pgwSlider.config.beforeSlide(elementId);
             }
 
-            pgwSlider.plugin.find('.ps-prev, .ps-next').addClass('fade');
+            //pgwSlider.plugin.find('.ps-prev, .ps-next').addClass('fade');
 
             // Transition effect
             fadeElement(element);
