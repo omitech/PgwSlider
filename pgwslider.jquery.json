@@ -1,7 +1,7 @@
 {
     "name": "pgwslider",
     "title": "PgwSlider",
-    "description": "Responsive and lightweight Slider plugin for jQuery",
+    "description": "Responsive and lightweight Slider plugin for Zepto",
     "keywords": [
         "slider",
         "slideshow",
@@ -27,11 +27,11 @@
             "url": "http://opensource.org/licenses/gpl-3.0"
         }
     ],
-    "bugs": "https://github.com/Pagawa/PgwSlider/issues",
+    "bugs": "https://github.com/omitech/PgwSlider/issues",
     "homepage": "http://pgwjs.com/pgwslider",
     "docs": "http://pgwjs.com/pgwslider",
     "download": "http://pgwjs.com/pgwslider",
     "dependencies": {
-        "jquery": ">=1"
+        "zepto": ">=1"
     }
 }
