@@ -38,6 +38,8 @@
         pgwSlider.transitionInProgress = false;
         pgwSlider.window = $(window);
 
+        pgwSlider.pgwList = null;
+        
         // Init
         var init = function() {
 
@@ -109,11 +111,8 @@
                 var elementWidth = (100 / pgwSlider.slideCount);
                 
                 
-                pgwSlider.plugin.find('.ps-list > li').css({ width: elementWidth + '%' });
-
-                
-                //pgwSlider.plugin.find('.ps-current').css('height', height);
-                pgwSlider.plugin.find('.ps-list > li').css('height', elementHeight);
+                pgwSlider.pgwList.css({ width: elementWidth + '%' });
+                pgwSlider.pgwList.css('height', elementHeight);
                 
                 var imgHeight = element.find('img').height();                
                 pgwSlider.plugin.find('.ps-prev').css('top', imgHeight * 0.4);
@@ -151,11 +150,8 @@
             
             pgwSlider.plugin.prepend(pgwCurrent);
             
-            
-            var pgwList = pgwSlider.plugin.find('.ps-list > li');
-            
-            pgwSlider.slideCount = pgwList.length;
-
+            pgwSlider.pgwList = pgwSlider.plugin.find('.ps-list > li');            
+            pgwSlider.slideCount = pgwSlider.pgwList.length;
             if (pgwSlider.slideCount == 0) {
                 console.log('PgwSlider - No slider item has been found');
                 return false;
@@ -175,7 +171,7 @@
 
             // Get slider elements
             var elementId = 1;
-            pgwList.each(function() {
+            pgwSlider.pgwList.each(function() {
                 var element = getElement($(this));
                 element.id = elementId;
                 pgwSlider.data.push(element);
@@ -187,22 +183,10 @@
                 var currentElement = $('<li class="elt_' + elementId + '"></li>');
                 
                 currentElement.html($(this).html());
-                /*
-                if (element.image) {
-                    currentElement.html('<img src="' + element.image + '" alt="' + (element.title ? element.title : '') + '">');
-                } else if (element.thumbnail) {
-                    currentElement.html('<img src="' + element.thumbnail + '" alt="' + (element.title ? element.title : '') + '">');
-                }
-
-                if (element.link) {
-                    currentElement.html('<a href="' + element.link + '"' + (element.linkTarget ? ' target="' + element.linkTarget + '"' : '') + '>' + currentElement.html() + '</a>');
-                }
-                */
-                
 
                 pgwUl.append(currentElement);
 
-                $(this).css('cursor', 'pointer').click(function(event) {
+                $(this).click(function(event) {
                         event.preventDefault();
                         displayElement(element.id);
                 });
@@ -267,8 +251,8 @@
             var elementContainer = pgwSlider.plugin.find('.ps-current > ul');
 
             // Update list items
-            pgwSlider.plugin.find('.ps-list > li').removeClass('active');
-            pgwSlider.plugin.find('.ps-list > li.elt_' + element.id).addClass('active');
+            pgwSlider.pgwList.removeClass('active');
+            pgwSlider.pgwList.filter('.elt_' + element.id).addClass('active');
 
             elementContainer.find('li').not('.elt_' + pgwSlider.currentSlide).not('.elt_' + element.id).each(function(){
                 if (typeof $(this).stop == 'function') {
@@ -398,12 +382,10 @@
 
         // Destroy slider
         pgwSlider.destroy = function(soft) {
-            clearInterval(pgwSlider.intervalEvent);
 
             if (typeof soft != 'undefined') {
-                pgwSlider.plugin.find('.ps-list > li').each(function() {
-                    $(this).attr('style', null).removeClass().css('cursor', '').unbind('click').unbind('mouseenter');
-                    $(this).find('a').css('cursor', '');
+                pgwSlider.pgwList.each(function() {
+                    $(this).attr('style', null).removeClass().unbind('click').unbind('mouseenter');
                     $(this).find('img').attr('style', null);
                 });
 
@@ -421,9 +403,6 @@
             pgwSlider.currentSlide = 0;
             pgwSlider.slideCount = 0;
             pgwSlider.resizeEvent = null;
-            pgwSlider.intervalEvent = null;
-            pgwSlider.touchFirstPosition = null;
-            pgwSlider.transitionInProgress = false;
             pgwSlider.window = null;
 
             return true;
