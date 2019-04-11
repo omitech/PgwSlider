@@ -108,8 +108,7 @@
 
                 // Adjust right list
                 var elementHeight = ((height - ((pgwSlider.slideCount - 1) * 6)) / pgwSlider.slideCount);
-                var elementWidth = (100 / pgwSlider.slideCount);
-                
+                var elementWidth =  Math.min((100 / pgwSlider.slideCount), 33);                
                 
                 pgwSlider.pgwList.css({ width: elementWidth + '%' });
                 pgwSlider.pgwList.css('height', elementHeight);
