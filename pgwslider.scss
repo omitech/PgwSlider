@@ -19,7 +19,7 @@
     .ps-current {
         float: left;
         width: 74%;
-        overflow: hidden;
+        /*overflow: hidden;*/
         height: inherit;
         position: relative;
         font-size: 1rem;
@@ -138,7 +138,7 @@ ul.pgwSlider > li:hover,
     border-radius: 0 4px 4px 0;
     position: absolute;
     padding: 20px 20px 20px 17px;
-    left: 0;
+    left: -15px;
     top: 45%;
     cursor: pointer;
     z-index: 5;
@@ -151,7 +151,7 @@ ul.pgwSlider > li:hover,
     border-radius: 4px 0 0 4px;
     position: absolute;
     padding: 20px 17px 20px 20px;
-    right: 0;
+    right: -15px;
     top: 45%;
     cursor: pointer;
 }
